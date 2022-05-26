@@ -1,0 +1,25 @@
+{
+    "name": "wit-syntax",
+    "displayName": "wit-syntax",
+    "description": "WebAssembly Interface Types (WIT, .wit) support",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.67.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "wit",
+            "aliases": ["WebAssembly Interface Types", "wit"],
+            "extensions": [".wit"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "wit",
+            "scopeName": "source.wit",
+            "path": "./syntaxes/wit.tmLanguage.json"
+        }]
+    }
+}

@@ -1,0 +1,475 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "wit",
+	"scopeName": "source.wit",
+	"patterns": [
+		{
+			"include": "#comment"
+		},
+		{
+			"include": "#enum"
+		},
+		{
+			"include": "#record"
+		},
+		{
+			"include": "#use"
+		},
+		{
+			"include": "#function-name"
+		},
+		{
+			"include": "#function-parameters"
+		},
+		{
+			"include": "#function-return-type"
+		}
+	],
+	"repository": {
+		"comment": {
+			"patterns": [
+				{
+					"comment": "line comment",
+					"name": "comment.line.wit",
+					"match": "(//).*$",
+					"captures": {
+						"1": {
+							"name": "punctuation.definition.comment.wit"
+						}
+					}
+				},
+				{
+					"comment": "block comment",
+					"name": "comment.block.wit",
+					"begin": "/\\*",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.comment.wit"
+						}
+					},
+					"end": "\\*/",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.comment.wit"
+						}
+					}
+				}
+			]
+		},
+		"enum": {
+			"name": "enum",
+			"begin": "\\b(enum)\\s+",
+			"beginCaptures": {
+				"1": {
+					"name": "storage.type"
+				}
+			},
+			"end": "(?<=\\})",
+			"patterns": [
+				{
+					"include": "#comment"
+				},
+				{
+					"begin": "\"",
+					"end": "\"",
+					"beginCaptures": {
+						"0": {
+							"name": "other.punctuation"
+						}
+					},
+					"endCaptures": {
+						"0": {
+							"name": "other.punctuation"
+						}
+					},
+					"patterns": [
+						{
+							"name": "entity.name.type.quoted",
+							"match": "([\u0020-\u007e\u0080-\u10ffff]|\\t|\\\\(n|t|\\\\|'|\"))"
+						}
+					]
+				},
+				{
+					"name": "entity.name.type.raw",
+					"match": "[a-zA-Z0-9-]+\\s+(?=\\{)"
+				},
+				{
+					"begin": "(\\{)",
+					"beginCaptures": {
+						"0": {
+							"name": "other.punctuation"
+						}
+					},
+					"end": "(\\})",
+					"endCaptures": {
+						"0": {
+							"name": "other.punctuation"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#comment"
+						},
+						{
+							"begin": "\"",
+							"end": "\"",
+							"beginCaptures": {
+								"0": {
+									"name": "other.punctuation"
+								}
+							},
+							"endCaptures": {
+								"0": {
+									"name": "other.punctuation"
+								}
+							},
+							"patterns": [
+								{
+									"name": "entity.name.type.quoted",
+									"match": "([\u0020-\u007e\u0080-\u10ffff]|\\t|\\\\(n|t|\\\\|'|\"))"
+								}
+							]
+						},
+						{
+							"name": "entity.name.type.raw",
+							"match": "[a-zA-Z0-9-]+"
+						},
+						{
+							"name": "other.puncutation.comma",
+							"match": "\\s*(,)"
+						}
+					]
+				}
+			]
+		},
+		"record": {
+			"name": "record",
+			"begin": "\\b(record)\\s+",
+			"beginCaptures": {
+				"1": {
+					"name": "storage.type"
+				}
+			},
+			"end": "(?<=\\})",
+			"patterns": [
+				{
+					"include": "#comment"
+				},
+				{
+					"begin": "\"",
+					"end": "\"",
+					"beginCaptures": {
+						"0": {
+							"name": "other.punctuation"
+						}
+					},
+					"endCaptures": {
+						"0": {
+							"name": "other.punctuation"
+						}
+					},
+					"patterns": [
+						{
+							"name": "entity.name.type.quoted",
+							"match": "([\u0020-\u007e\u0080-\u10ffff]|\\t|\\\\(n|t|\\\\|'|\"))"
+						}
+					]
+				},
+				{
+					"name": "entity.name.type.raw",
+					"match": "[a-zA-Z0-9-]+\\s+(?=\\{)"
+				},
+				{
+					"begin": "(\\{)",
+					"beginCaptures": {
+						"0": {
+							"name": "other.punctuation"
+						}
+					},
+					"end": "(\\})",
+					"endCaptures": {
+						"0": {
+							"name": "other.punctuation"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#comment"
+						},
+						{
+							"comment": "quoted field name",
+							"begin": "\"",
+							"end": "\"",
+							"beginCaptures": {
+								"0": {
+									"name": "other.punctuation"
+								}
+							},
+							"endCaptures": {
+								"0": {
+									"name": "other.punctuation"
+								}
+							},
+							"patterns": [
+								{
+									"name": "variable.other.quoted",
+									"match": "([\u0020-\u007e\u0080-\u10ffff]|\\t|\\\\(n|t|\\\\|'|\"))"
+								}
+							]
+						},
+						{
+							"comment": "raw field name",
+							"name": "variable.other.raw",
+							"match": "[a-zA-Z0-9-]+"
+						},
+						{
+							"comment": ": type",
+							"begin": "(?<=:\\s*)",
+							"end": ",|\\}",
+							"beginCaptures": {
+								"0": {
+									"name": "other.punctuation"
+								}
+							},
+							"endCaptures": {
+								"0": {
+									"name": "other.punctuation"
+								}
+							},
+							"patterns": [
+								{
+									"include": "#type"
+								}
+							]
+						},
+						
+						{
+							"name": "other.puncutation.comma",
+							"match": "\\s*(,)"
+						}
+					]
+				}
+			]
+		},
+		"function-name": {
+			"name": "entity.name.function",
+			"match": "([a-zA-Z0-9-]+)(?=\\s*:\\s*function)"
+		},
+		"function-parameters": {
+			"name": "function parameters",
+			"begin": "(function)(\\()",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.other.function"
+				},
+				"2": {
+					"name": "other.puncutation.parenthesis"
+				}
+			},
+			"end": "\\)",
+			"endCaptures": {
+				"0": {
+					"name": "other.punctuation.parenthesis"
+				}
+			},
+			"patterns": [
+				{
+					"name": "parameter",
+					"begin": "([a-zA-Z0-9-]+):\\s*",
+					"beginCaptures": {
+						"1": {
+							"name": "variable.other"
+						}
+					},
+					"end": "(?=\\))|,",
+					"endCaptures": {
+						"0": {
+							"name": "other.punctuation"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#type"
+						}
+					]
+				}
+			]
+		},
+		"function-return-type": {
+			"name": "function return type",
+			"begin": "(?<=\\)\\s*)(->)\\s*",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.operator.arrow.skinny"
+				}
+			},
+			"end": "$",
+			"patterns": [
+				{
+					"include": "#type"
+				}
+			]
+		},
+		"type": {
+			"comment": "type",
+			"name": "type",
+			"patterns": [
+				{
+					"comment": "primitive",
+					"name": "entity.name.type.primitive",
+					"match": "\\b(u8|u16|u32|u64|s8|s16|s32|s64|float32|float64|char|bool|string)\\b"
+					
+				},
+				{
+					"comment": "tuple",
+					"begin": "\\(",
+					"end": "\\)",
+					"patterns": [
+						{
+							"include": "#type"
+						},
+						{
+							"name": "other.punctuation.comma",
+							"match": "\\s*(,)"
+						}
+					]
+				},
+				{
+					"comment": "special types",
+					"name": "entity.name.type.special",
+					"begin": "(expected|option|list)(<)",
+					"beginCaptures": {
+						"1": {
+							"name": "entity.name.type.special"
+						},
+						"2": {
+							"name": "punctuation.brackets.angle"
+						}
+					},
+					"end": ">",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.brackets.angle"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#type"
+						},
+						{
+							"name": "other.punctuation.comma",
+							"match": "\\s*(,)"
+						}
+					]
+				},
+				{
+					"include": "#type-identifier-quoted"
+				},
+				{
+					"include": "#type-identifier-raw"
+				}
+			]
+		},
+		"type-identifier-quoted": {
+			"begin": "\"",
+			"end": "\"",
+			"beginCaptures": {
+				"0": {
+					"name": "other.punctuation"
+				}
+			},
+			"endCaptures": {
+				"0": {
+					"name": "other.punctuation"
+				}
+			},
+			"patterns": [
+				{
+					"name": "entity.name.type.quoted",
+					"match": "([\u0020-\u007e\u0080-\u10ffff]|\\t|\\\\(n|t|\\\\|'|\"))"
+				}
+			]
+		},
+		"type-identifier-raw": {
+			"name": "entity.name.type.raw",
+			"match": "%?[a-zA-Z0-9-]+"
+		},
+		"string": {
+			"comment": "string literal",
+			"name": "string",
+			"begin": "\"",
+			"end": "\"",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin"
+				}
+			},
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.end"
+				}
+			},
+			"patterns": [
+				{
+					"name": "constant.character.escape.wit",
+					"match": "\\\\(n|t|\\\\|'|\")"
+				}
+			]
+		},
+		"parameter": {
+			"comment": "function parameter",
+			"name": "variable.other.parameter",
+			"begin": "",
+			"end": "(?=\\)|,)",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin"
+				}
+			},
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.end"
+				}
+			},
+			"patterns": [
+				{
+					"name": "constant.character.escape.wit",
+					"match": "\\\\(n|t|\\\\|'|\")"
+				}
+			]
+		},
+		"use": {
+			"name": "use",
+			"begin": "(use)\\s*(\\{)",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.other.use"
+				},
+				"2": {
+					"name": "punctuation.other.brace"
+				}
+			},
+			"end": "(\\})\\s*(from)\\s+([a-zA-Z0-9-]+)",
+			"endCaptures": {
+				"1": {
+					"name": "punctuation.other.brace"
+				},
+				"2": {
+					"name": "keyword.other.use"
+				},
+				"3": {
+					"name": "entity.name.namespace"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#type"
+				},
+				{
+					"name": "other.punctuation.comma",
+					"match": "\\s*(,)"
+				}
+			]
+		}
+	}
+}
